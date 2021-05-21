@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 export enum SearchType {
   all = '',
@@ -14,18 +14,32 @@ export enum SearchType {
   providedIn: 'root',
 })
 export class MovieService {
-  url = 'http://www.omdbapi.com/';
+  url = 'https://www.omdbapi.com/';
   apiKey = '56b87b99';
 
+  errorMsg : string = ''
   constructor(private http: HttpClient) {}
 
   searchMovie(title: string, type: SearchType): Observable<any> {
-   return this.http
-      .get(
-        `${this.url}?s=${encodeURI(title)}&type=${type}&apikey=${this.apiKey}`
-      )
-      .pipe(map((results) => results['Search']));
+   
+      let res = this.http
+        .get(
+          `${this.url}?s=${encodeURI(title)}&type=${type}&apikey=${this.apiKey}`
+        )
+        .pipe(
 
+          map(result => {
+            if (result['Response'] == 'False') {
+               console.log("No record found")
+               this.errorMsg = "No movie found, try again"
+               return
+            } else {
+              return result['Search']
+            }
+           })
+          
+          );
+      return res;
   }
 
   getMovieDetails(id) {

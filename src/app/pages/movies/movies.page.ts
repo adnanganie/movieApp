@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class MoviesPage implements OnInit {
 
+  errorOccur : string = '';
   results: Observable<any>;
   searchTerm: string = '';
   type: SearchType = SearchType.all;
@@ -17,9 +18,11 @@ export class MoviesPage implements OnInit {
   constructor(private movieService: MovieService) { }
 
   ngOnInit() {
+   
   }
 
   onSearch(){
+    this.errorOccur = this.movieService.errorMsg
     this.results = this.movieService.searchMovie(this.searchTerm, this.type)
   }
   
