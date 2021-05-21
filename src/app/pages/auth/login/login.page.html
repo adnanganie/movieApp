@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <img src="assets/shapes.svg" />
+    <ion-card-content>
+      <form [formGroup]="loginForm">
+        <ion-item lines="full">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input formControlName="email" type="email" required></ion-input>
+        </ion-item>
+        <div class="error-messages">
+
+          <ng-container *ngFor="let error of errorMessages.email">
+            <ion-text class="error-message"
+              *ngIf="loginForm.get('email').hasError('type')&& (loginForm.get('email').dirty || loginForm.get('email').touched)">
+              {{error.message}}
+            </ion-text>
+          </ng-container>
+
+        </div>
+        <ion-item lines="full">
+          <ion-label position="floating">Password</ion-label>
+          <ion-input formControlName="password" type="password" required></ion-input>
+        </ion-item>
+        <div class="error-messages">
+          <ng-container *ngFor="let error of errorMessages.password">
+            <ion-label class="error-message"
+              *ngIf="loginForm.get('password').hasError('type') && (loginForm.get('password').dirty || loginForm.get('password').touched)">
+              {{error.message}}
+            </ion-label>
+          </ng-container>
+
+        </div>
+        <ion-row>
+          <ion-col>
+            <ion-button [disabled]="!loginForm.valid" shape="rounded" type="submit" color="danger" expand="block"
+              [routerLink]="['/movies']">Sign In</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-grid>
+          <ion-row class="ion-align-items-center ion-no-padding">
+            <ion-col size="8" offset="2">
+              <a [routerLink]="['/forgotpassword']" class="small-text">Forgot Password?</a>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="8" offset="4">
+              <a [routerLink]="['/register']" class="small-text">Register</a>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

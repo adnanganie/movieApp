@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'movies',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -19,6 +19,19 @@ const routes: Routes = [
     path: 'movie/:id',
     loadChildren: () => import('./pages/movie-details/movie-details.module').then( m => m.MovieDetailsPageModule)
   },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/auth/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./pages/auth/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'forgotpassword',
+    loadChildren: () => import('./pages/auth/forgotpassword/forgotpassword.module').then( m => m.ForgotpasswordPageModule)
+  },
+
 
 ];
 
