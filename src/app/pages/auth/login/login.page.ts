@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 
+import { IonLoaderService } from '../../../services/utils/ion-loader.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -48,7 +50,7 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private ionLoaderService: IonLoaderService) {
     
     this.loginForm = this.formBuilder.group({
       email: new FormControl(
@@ -73,4 +75,8 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {}
+
+  loginIn(){
+    this.ionLoaderService.autoLoader()
+  }
 }

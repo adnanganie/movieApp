@@ -8,16 +8,15 @@
   <ion-card>
     <img src="assets/shapes.svg" />
     <ion-card-content>
-      <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm" (submit)="loginIn()">
         <ion-item lines="full">
           <ion-label position="floating">Email</ion-label>
           <ion-input formControlName="email" type="email" required></ion-input>
         </ion-item>
-        <div class="error-messages">
-
+        <div class="error-messages">    
           <ng-container *ngFor="let error of errorMessages.email">
             <ion-text class="error-message"
-              *ngIf="loginForm.get('email').hasError('type')&& (loginForm.get('email').dirty || loginForm.get('email').touched)">
+              *ngIf="loginForm.get('email').errors && (loginForm.get('email').dirty || loginForm.get('email').touched)">
               {{error.message}}
             </ion-text>
           </ng-container>
@@ -30,7 +29,7 @@
         <div class="error-messages">
           <ng-container *ngFor="let error of errorMessages.password">
             <ion-label class="error-message"
-              *ngIf="loginForm.get('password').hasError('type') && (loginForm.get('password').dirty || loginForm.get('password').touched)">
+              *ngIf="loginForm.get('password').errors && (loginForm.get('password').dirty || loginForm.get('password').touched)">
               {{error.message}}
             </ion-label>
           </ng-container>
