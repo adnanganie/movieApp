@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MovieDetailsPageRoutingModule } from './movie-details-routing.module';
 
 import { MovieDetailsPage } from './movie-details.page';
+import { MovieDetailsCardComponent } from 'src/app/components/movie-details-card/movie-details-card.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { MovieDetailsPage } from './movie-details.page';
     IonicModule,
     MovieDetailsPageRoutingModule
   ],
-  declarations: [MovieDetailsPage]
+  declarations: [MovieDetailsPage, MovieDetailsCardComponent]
 })
 export class MovieDetailsPageModule {}

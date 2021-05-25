@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-
-import { MovieService, SearchType } from '../../services/movie.service'
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { MovieService, SearchType } from '../../services/movie.service';
 import { Observable } from 'rxjs';
 
 import { IonLoaderService } from '../../services/utils/ion-loader.service';
@@ -10,26 +10,41 @@ import { IonLoaderService } from '../../services/utils/ion-loader.service';
   templateUrl: './movies.page.html',
   styleUrls: ['./movies.page.scss'],
 })
-export class MoviesPage implements OnInit {
-
-  errorOccur : string = '';
+export class MoviesPage implements OnInit, OnDestroy, AfterViewInit {
+  
+  backButtonSubscription;
+  errorOccur: string = '';
   results: Observable<any>;
   searchTerm: string = '';
   type: SearchType = SearchType.all;
 
-  constructor(private movieService: MovieService, private ionLoaderService: IonLoaderService) { }
+  constructor(
+    private movieService: MovieService,
+    private ionLoaderService: IonLoaderService,
+    private platform: Platform
+  ) {}
+
 
   ngOnInit() {
-    this.searchTerm = "ertugrul"
-   this.onSearch()
+    this.searchTerm = 'ertugrul';
+    this.onSearch();
   }
 
-  onSearch(){
-    this.errorOccur = this.movieService.errorMsg
-  
-    this.results = this.movieService.searchMovie(this.searchTerm, this.type)
+  ngAfterViewInit() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      navigator['app'].exitApp();
+    });
   }
-  
+  ngOnDestroy() {
+    this.backButtonSubscription.unsubscribe();
+  }
+
+  onSearch() {
+    this.errorOccur = this.movieService.errorMsg;
+
+    this.results = this.movieService.searchMovie(this.searchTerm, this.type);
+  }
+
   displayAutoLoader() {
     this.ionLoaderService.autoLoader();
   }

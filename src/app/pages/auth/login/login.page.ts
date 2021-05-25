@@ -5,8 +5,12 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
-
+import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 import { IonLoaderService } from '../../../services/utils/ion-loader.service';
+
+const STORAGE_KEY = 'user_credentials';
+const HAS_LOGGED_IN = 'hasLoggedIn';
 
 @Component({
   selector: 'app-login',
@@ -50,8 +54,12 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private ionLoaderService: IonLoaderService) {
-    
+  constructor(
+    private formBuilder: FormBuilder,
+    private ionLoaderService: IonLoaderService,
+    private storage: Storage,
+    private router: Router
+  ) {
     this.loginForm = this.formBuilder.group({
       email: new FormControl(
         '',
@@ -59,7 +67,7 @@ export class LoginPage implements OnInit {
           Validators.required,
           Validators.minLength(6),
           Validators.maxLength(50),
-          Validators.pattern('^[a-zA-Z0-9_+-+@[a-zA-Z0-9-1+. [a-zA-Z0-9-.]+$'),
+          Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
         ])
       ),
 
@@ -73,10 +81,40 @@ export class LoginPage implements OnInit {
       ),
     });
   }
+  async ngOnInit() {
+    let hasLoggedIn = await this.storage.get(HAS_LOGGED_IN);
+  }
 
-  ngOnInit() {}
+  async loginIn() {
+    let userData = this.loginForm.value;
 
-  loginIn(){
-    this.ionLoaderService.autoLoader()
+    let userCredentials = {
+      email: userData.email,
+      password: userData.password,
+    };
+    this.setUserCredentials(userCredentials);
+    await this.storage.set(HAS_LOGGED_IN, true);
+
+    this.router.navigate(['/movies'])
+    this.ionLoaderService.autoLoader();
+  }
+
+  logout() {
+    this.storage.remove(HAS_LOGGED_IN);
+    this.storage.remove(STORAGE_KEY);
+  }
+
+  setUserCredentials(userCredentials) {
+    this.storage.set(STORAGE_KEY, userCredentials);
+  }
+
+  getUserCredentials() {
+    return this.storage.get(STORAGE_KEY).then((value) => {
+      return value;
+    });
+  }
+
+  hasLoggedIn() {
+    return this.storage.get(HAS_LOGGED_IN);
   }
 }

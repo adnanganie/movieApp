@@ -21,22 +21,9 @@
     <ion-text color="danger">
       <h3>{{ errorOccur }}</h3>
     </ion-text>
-    <ion-item button *ngFor="let item of (results | async)" [routerLink]="['/', 'movie', item.imdbID]">
 
-      <ion-avatar slot="start">
-        <img [src]="item.Poster" *ngIf="item.Poster != 'N/A'">
-      </ion-avatar>
-
-      <ion-label text-wrap>
-        <h2>{{ item.Title }}</h2>
-        {{ item.Year }}
-      </ion-label>
-
-      <ion-icon slot="end" *ngIf="item.Type == 'movie'" name="videocam"></ion-icon>
-      <ion-icon slot="end" *ngIf="item.Type == 'series'" name="tv"></ion-icon>
-      <ion-icon slot="end" *ngIf="item.Type == 'game'" name="logo-game-controller-b"></ion-icon>
-
-    </ion-item>
-
+    <!-- custom components -->
+    <app-movie-card [moviesData]="results" ></app-movie-card>
+  
   </ion-list>
 </ion-content>
